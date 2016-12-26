@@ -53,18 +53,31 @@ dfsem.index=dfsem['WEEK']
 dfsem.drop('WEEK',axis=1)
 
 
-plt.subplot(211)
-plt.plot(range(12))
-plt.subplot(212)
+
+left, width = 0.1, 0.65
+bottom, height = 0.1, 0.65
+bottom_h = left_h = left + width + 0.02
+
+rect_scatter = [left, bottom, width, height]
+rect_histx = [left, bottom_h, width, 0.2]
+rect_histy = [left_h, bottom, 0.2, height]
+
+fig = plt.figure(1, figsize=(5.5,5.5))
+
+axScatter = plt.axes(rect_scatter)
+axHistx = plt.axes(rect_histx)
+axHisty = plt.axes(rect_histy)
+
+
 
 #plt.axes([0.025,0.025,0.95,0.95])
-plt.scatter(X.values,Y.values, s=75, c=T.values, cmap='Reds', alpha=1)
+axScatter.scatter(X.values,Y.values, s=75, c=T.values, cmap='Reds', alpha=1)
 #plt.xlim((X.min()-datetime.timedelta(days=1),X.max()+datetime.timedelta(days=1)))
 minsemday=X.min()-pd.datetools.timedelta(days=int(pd.datetime.strftime(X.min(),'%w')))
 maxsemday=X.max()+(pd.datetools.timedelta(days=7-int(pd.datetime.strftime(X.max(),'%w'))))
-plt.xlim(minsemday,maxsemday)
-loc,labels=plt.xticks()
-plt.xticks(np.linspace(pd.datetime.toordinal(minsemday),pd.datetime.toordinal(maxsemday),num=5), S.drop_duplicates().sort_values().values,rotation=90 )
+axScatter.xlim(minsemday,maxsemday)
+loc,labels=axScatter.xticks()
+axScatter.xticks(np.linspace(pd.datetime.toordinal(minsemday),pd.datetime.toordinal(maxsemday),num=5), S.drop_duplicates().sort_values().values,rotation=90 )
 #plt.xticks(np.linspace(loc.min(),loc.max(),num=5), S.drop_duplicates().sort_values().values,rotation=90 )
 #   plt.xticks(rotation=90 )
 ax.grid()
@@ -75,13 +88,13 @@ ax.grid()
 #plt.ylim(-1.5,1.5), plt.yticks([])
 
 
-xpromsem=np.linspace(plt.xlim()[0],plt.xlim()[1],num=5)
+xpromsem=np.linspace(axScatter.xlim()[0],axScatter.xlim()[1],num=5)
 ypromsem=dfsem.sort_index()['MEAN_DAYS'].values
 #yvals=np.repeat(yvals,2)
-plt.plot(xpromsem[0:2],(ypromsem[0],ypromsem[0]),'r--')
-plt.plot(xpromsem[1:3],(ypromsem[1],ypromsem[1]),'r--')
-plt.plot(xpromsem[2:4],(ypromsem[2],ypromsem[2]),'r--')
-plt.plot(xpromsem[3:5],(ypromsem[3],ypromsem[3]),'r--')
+axScatter.plot(xpromsem[0:2],(ypromsem[0],ypromsem[0]),'r--')
+axScatter.plot(xpromsem[1:3],(ypromsem[1],ypromsem[1]),'r--')
+axScatter.plot(xpromsem[2:4],(ypromsem[2],ypromsem[2]),'r--')
+axScatter.plot(xpromsem[3:5],(ypromsem[3],ypromsem[3]),'r--')
 
 
 
